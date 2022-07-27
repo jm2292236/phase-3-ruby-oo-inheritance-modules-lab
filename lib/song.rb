@@ -1,36 +1,30 @@
 require 'pry'
 
 class Song
-  attr_accessor :name
-  attr_reader :artist
+    extend Memorable::ClassMethods
+    extend Findable::ClassMethods
+    include Memorable::InstanceMethods
+    include Paramable::InstanceMethods
+    
+    attr_accessor :name
+    attr_reader :artist
 
-  @@songs = []
+    @@songs = []
 
-  def initialize
-    @@songs << self
-  end
+    # Here it was the initialize definition
 
-  def self.find_by_name(name)
-    @@songs.detect{|a| a.name == name}
-  end
+    # Former place definition of #find_by_name
+    
+    def self.all
+        @@songs
+    end
 
-  def self.all
-    @@songs
-  end
+    # Here it was the definition of #reset_all and #count
+    # that are now defined in Memorable
 
-  def self.reset_all
-    self.all.clear
-  end
+    def artist=(artist)
+        @artist = artist
+    end
 
-  def self.count
-    self.all.count
-  end
-
-  def artist=(artist)
-    @artist = artist
-  end
-
-  def to_param
-    name.downcase.gsub(' ', '-')
-  end
+    # Here it was the to_param definition
 end
